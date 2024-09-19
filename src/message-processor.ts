@@ -31,6 +31,8 @@ export const processEventMessages = async (consumer: Consumer) => {
     const eventTimestamp = new Date(eventDateTime)
     const employeeId = eventMessage.headers!.get('Event-EmployeeNoString')
     const deviceName = eventMessage.headers!.get('Event-DeviceName')
+    const majorEventType = eventMessage.headers!.get('Event-MajorEventType')
+    const subEventType = eventMessage.headers!.get('Event-SubEventType')
 
     const isEventExpired =
       currentTime.getTime() - eventTimestamp.getTime() >
@@ -49,7 +51,7 @@ export const processEventMessages = async (consumer: Consumer) => {
       formData.append('gate_name', deviceName)
 
       console.log(
-        `Processing event: ${eventDateTime} | Employee: ${employeeId} | Device: ${deviceName}`,
+        `Processing event: ${eventDateTime} ${employeeId} ${majorEventType}/${subEventType} ${deviceName}`,
       )
 
       try {
